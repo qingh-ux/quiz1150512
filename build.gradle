@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//Groovy語言寫法:
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//Spring Boot 的網頁開發大禮包（包含內建的 Tomcat 伺服器、RESTful API 支援）。
+	//為什麼需要它：沒有它，你的專案只是一個普通的 Java 程式；
+	//有了它，你的專案才能變成一個可以處理前端 HTTP 請求（如 Get、Post）、傳送 JSON 的 Web 伺服器。
+	
+	// spring data jpa
+	//不用手動寫 SQL 就能操作資料庫。在 Java 裡面寫 @Entity、@ManyToOne，並直接用 repository.save() 來把物件存進資料庫。
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// mysql connector: mysql 驅動
+	//Java 講 Java 語（JVM），MySQL 講 MySQL 語。這個驅動就是兩者之間的翻譯官，沒有它，Java 就無法跟剛才在 MySQL Workbench 蓋好的資料庫建立連線。
+	implementation 'com.mysql:mysql-connector-j'
+	// 程式碼修改後儲存會自動重啟 
+	//它是 developmentOnly（代表只有在開發時有用，正式上線不會包進去）。它的作用是只要你在 Eclipse 修改了程式碼並按存檔，伺服器就會自動重啟，不用每次手動把程式關掉再重跑。
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// security
+	//處理使用者登入、密碼加密（BCrypt）、權限驗證。加上這行後，如果沒有設定，預設連瀏覽網頁都會跳出登入視窗要求輸入密碼。
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 資料驗證
+	//在 Java 的 Entity 或 DTO 裡面寫註解檢查資料。例如：@NotBlank（不能是空白）、@Email（格式必須是信箱）、@Size(min=6)（長度至少6位）。這樣就不用自己在 Java 寫一堆 if (email == null) 來驗證輸入了。
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
